@@ -1,0 +1,43 @@
+<section class="todoapp">
+  <header class="header">
+    <h1>Todo</h1>
+    <input class="new-todo" [(ngModel)] = "newTodo" (keyup.enter)="addTodo()" placeholder="What needs to be done?" autofocus>
+  </header>
+
+  <section class="main">
+    <ul class="todo-list">
+      <li *ngFor="let todo of todos" [ngClass]="{completed: todo.isDone, editing: todo.editing}">
+        <div class="view">
+          <input class="toggle" type="checkbox" (change)="toggleComplete()" [(ngModel)]="todo.isDone">
+          <label (dblclick)="todo.editing = true">{{todo.title}}</label>
+          <button class="destroy" (click)="destroyTodo(todo)"></button>
+        </div>
+        <input class="edit"
+               #updatedTodo
+               [value]="todo.title"
+               (blur)="updateTodo(todo, updatedTodo.value)"
+               (keyup.escape)="todo.editing = false"
+               (keyup.enter)="updateTodo(todo, updatedTodo.value)">
+      </li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+
+    <span class="todo-count"><strong>{{activeTasks}}</strong> item left</span>
+
+    <ul class="filters">
+      <li>
+        <a [routerLink]="['/all']" [class.selected]="path === 'all'">All</a>
+      </li>
+      <li>
+        <a [routerLink]="['/active']" [class.selected]="path === 'active'">Active</a>
+      </li>
+      <li>
+        <a [routerLink]="['/completed']" [class.selected]="path === 'completed'">Completed</a>
+      </li>
+    </ul>
+
+    <button class="clear-completed" (click)="clearCompleted()">Clear completed</button>
+  </footer>
+</section>
